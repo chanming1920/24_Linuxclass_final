@@ -5,11 +5,32 @@ const Login = ({ onLoginSuccess }) => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async(e) => {
     e.preventDefault();
 
-    //  인증 로직 
-    if (studentNumber === '0000' && password === '1234') {
+    const isAdmin = studentNumber === '0000' && password === '0000';
+    const payload = { studentNumber, password, isAdmin };
+
+    try {
+    const response = await fetch('http://localhost:3000/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      alert(data.message);
+      onLoginSuccess();
+    } else {
+      setError(data.message || '로그인 실패');
+    }
+    } catch (err) {
+    setError('서버와 연결할 수 없습니다.');
+    }
+
+    //  관리자 인증 로직 
+    if (studentNumber === '0000' && password === '0000') {
       setMessage('로그인 성공!');
       onLoginSuccess();
     } else {
@@ -17,6 +38,9 @@ const Login = ({ onLoginSuccess }) => {
     }
   };
 
+
+
+  // 아래는 박스 디자인
   return (
     <div style={{ maxWidth: '300px', margin: '50px auto', textAlign: 'center' }}>
       <h2>로그인</h2>
