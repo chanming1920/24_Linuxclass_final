@@ -3,40 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <style>
+        body { max-width: 400px; margin: 50px auto; text-align: center; }
+        img { width: 100%; max-width: 300px; margin-top: 10px; }
+    </style>
+    <script src="/Proje/backend/app/src/public/js/home/upload.js"></script>
+    <title>이미지 업로드</title>
 </head>
 <body>
-    <p>프로세스를 진행합니다.</p>
-
-    <form>
-        <label for="imageUpload">이미지 선택:</label>
-        <input type="file" id="imageUpload" accept="image/*">
-      </form>
-      <img id="imagePreview" class="preview" alt="미리보기 이미지">
-    
-      <script>
-        // 파일 입력 요소와 미리보기 이미지 요소 가져오기
-        const imageUpload = document.getElementById('imageUpload');
-        const imagePreview = document.getElementById('imagePreview');
-    
-        // 파일 선택 시 처리 함수
-        imageUpload.addEventListener('change', (event) => {
-          const file = event.target.files[0]; // 선택된 파일 가져오기
-          
-          if (file) {
-            // FileReader로 파일 읽기
-            const reader = new FileReader();
-            reader.onload = function(e) {
-              imagePreview.src = e.target.result; // 미리보기 이미지에 로드
-            };
-            reader.readAsDataURL(file); // 이미지 파일을 Data URL로 읽기
-          } else {
-            imagePreview.src = ""; // 파일이 없으면 미리보기 초기화
-          }
-        });
-      </script>
-    
-        
-
+<h2>이미지 업로드</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" style="margin: 20px 0">
+        <br>
+    <button type="submit" style="padding: 10px 20px; cursor: pointer">업로드</button>
+    </form>
+    <div id="preview"></div>
 </body>
 </html>
