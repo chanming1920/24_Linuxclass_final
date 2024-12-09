@@ -1,9 +1,8 @@
 "use strict";
 
-const UserStorage = require("../../models/UserStorage");
+const UserStorage = require("../../models/User");
 const User = require("../../models/User");
 const path = require("path");
-
 
 
 const output = {
