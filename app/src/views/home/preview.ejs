@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파일 미리보기</title>
+    <link rel="stylesheet" href="/css/home/preview.css">
+    <script src="/js/home/preview.js" defer></script>
+</head>
+<body>
+    <div class="preview-container">
+        <h2>파일 미리보기</h2>
+        
+        <div class="file-preview">
+            <% if (fileType === 'image') { %>
+                <img src="/uploads/<%= fileName %>" class="image-preview" alt="이미지 미리보기">
+            <% } else if (fileType === 'pdf') { %>
+                <embed src="/uploads/<%= fileName %>" class="pdf-preview" type="application/pdf">
+            <% } else { %>
+                <p>미리보기를 지원하지 않는 파일 형식입니다.</p>
+            <% } %>
+        </div>
+        
+        <div class="file-info">
+            <p><strong>파일명:</strong> <%= fileInfo.originalName %></p>
+            <p><strong>업로드 날짜:</strong> <%= fileInfo.uploadDate.toLocaleDateString() %></p>
+            <p><strong>파일 크기:</strong> <%= fileInfo.fileSize %></p>
+        </div>
+        
+        <div class="actions">
+            <a href="/" class="btn">목록으로</a>
+            <a href="/uploads/<%= fileName %>" download class="btn">다운로드</a>
+        </div>
+    </div>
+</body>
+</html>
