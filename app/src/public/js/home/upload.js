@@ -64,7 +64,7 @@ class UploadHandler {
                 const text = await response.text();
                 if (response.ok) {
                     // 성공적인 응답이지만 JSON이 아닌 경우
-                    window.location.href = '/';
+                    window.location.href = '/index';
                 } else {
                     throw new Error('서버 응답 형식이 잘못되었습니다.');
                 }

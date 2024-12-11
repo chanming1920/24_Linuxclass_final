@@ -9,8 +9,9 @@ const uploader = Upload.getUploader();
 
 
 // router.get("/", ctrl.output.home);
-router.get("/", ctrl.output.home);
+router.get("/", ctrl.output.home); // login으로
 router.get("/login", ctrl.output.login);
+router.get("/index",ctrl.output.upload); //
 router.get("/register", ctrl.output.register);
 router.get("/preview/:fileName", PreviewController.showPreview);
 

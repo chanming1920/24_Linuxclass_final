@@ -8,7 +8,7 @@ const path = require("path");
 const output = {
     home: (req,res) => {
         // res.sendFile(path.join(__dirname, "index.ejs"));
-        res.render("home/index");
+        res.render("home/login"); //
     },
 
     login: (req, res) => {
@@ -18,6 +18,7 @@ const output = {
         res.render("home/register");
     },
     upload: (req, res) => {
+        res.render("home/index"); //
         try {
             if (!req.file) {
                 return res.status(400).json({ 
