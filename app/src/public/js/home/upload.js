@@ -18,7 +18,7 @@ class UploadHandler {
         if (!file) return;
 
         const preview = this.preview;
-        preview.innerHTML = ``; // 기존 미리보기 임시 삭제;;
+        preview.innerHTML = ''; // 기존 미리보기 삭제
 
         if (file.type.startsWith('image/')) {
             const reader = new FileReader();
@@ -35,6 +35,8 @@ class UploadHandler {
             video.controls = true;
             video.src = URL.createObjectURL(file);
             preview.appendChild(video);
+        } else {
+            preview.innerHTML = '<p>지원되지 않는 파일 형식입니다.</p>';
         }
     }
 
@@ -52,22 +54,11 @@ class UploadHandler {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const contentType = response.headers.get("content-type");
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                const data = await response.json();
-                if (data.success) {
-                    window.location.href = `/preview/${data.filename}`;
-                } else {
-                    throw new Error(data.message || '업로드 실패');
-                }
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = `/preview/${data.filename}`;
             } else {
-                const text = await response.text();
-                if (response.ok) {
-                    // 성공적인 응답이지만 JSON이 아닌 경우
-                    window.location.href = '/index';
-                } else {
-                    throw new Error('서버 응답 형식이 잘못되었습니다.');
-                }
+                throw new Error(data.message || '업로드 실패');
             }
         } catch (error) {
             console.error('Upload error:', error);
