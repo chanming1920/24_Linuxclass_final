@@ -15,14 +15,26 @@ class UploadHandler {
 
     handleFileSelect(e) {
         const file = e.target.files[0];
-        if (file) {
+        if (!file) return;
+
+        const preview = this.preview;
+        preview.innerHTML = ``; // 기존 미리보기 임시 삭제;;
+
+        if (file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = (e) => {
-                this.preview.innerHTML = `
+                preview.innerHTML = `
                     <img src="${e.target.result}" style="max-width: 300px; margin-top: 20px;">
                 `;
             };
             reader.readAsDataURL(file);
+        } else if (file.type.startsWith('video/')) {
+            const video = document.createElement('video');
+            video.style.maxWidth = '300px';
+            video.style.marginTop = '20px';
+            video.controls = true;
+            video.src = URL.createObjectURL(file);
+            preview.appendChild(video);
         }
     }
 
@@ -36,15 +48,29 @@ class UploadHandler {
                 body: formData
             });
 
-            const data = await response.json();
-            
-            if (response.ok) {
-                // 업로드 성공 시 미리보기 페이지로 이동
-                window.location.href = `/preview/${data.filename}`;
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                const data = await response.json();
+                if (data.success) {
+                    window.location.href = `/preview/${data.filename}`;
+                } else {
+                    throw new Error(data.message || '업로드 실패');
+                }
             } else {
-                throw new Error(data.message || '업로드 실패');
+                const text = await response.text();
+                if (response.ok) {
+                    // 성공적인 응답이지만 JSON이 아닌 경우
+                    window.location.href = '/';
+                } else {
+                    throw new Error('서버 응답 형식이 잘못되었습니다.');
+                }
             }
         } catch (error) {
+            console.error('Upload error:', error);
             alert('업로드 중 오류가 발생했습니다: ' + error.message);
         }
     }

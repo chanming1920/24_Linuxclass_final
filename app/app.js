@@ -7,8 +7,14 @@ const path = require("path");
 
 const app = express();
 
+const fs = require("fs");  // 1
+const uploadDir = "uploads"; // 2
+
+
+
 // 라우팅
 const home = require("./src/routes/home");
+
 
 
 // 앱 세팅
@@ -21,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // 정적 파일 제공
 app.use(express.static('public'));
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname,'uploads')));
 
 
 app.use("/", home); // use -> 미들웨어를 등록해주는 메서드

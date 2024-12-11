@@ -14,8 +14,11 @@
         <div class="file-preview">
             <% if (fileType === 'image') { %>
                 <img src="/uploads/<%= fileName %>" class="image-preview" alt="이미지 미리보기">
-            <% } else if (fileType === 'pdf') { %>
-                <embed src="/uploads/<%= fileName %>" class="pdf-preview" type="application/pdf">
+            <% } else if (fileType === 'video') { %>
+                <video class = "video-preview" controls>
+                    <source src="/uploads/<%= fileName %>" type="video/mp4">
+                    당신의 브라우저는 비디오 태그를 지원하지 않습니다.
+                </video>
             <% } else { %>
                 <p>미리보기를 지원하지 않는 파일 형식입니다.</p>
             <% } %>
@@ -23,6 +26,7 @@
         
         <div class="file-info">
             <p><strong>파일명:</strong> <%= fileInfo.originalName %></p>
+            <p><strong>파일 형식:</strong> <%= fileType %></p>
             <p><strong>업로드 날짜:</strong> <%= fileInfo.uploadDate.toLocaleDateString() %></p>
             <p><strong>파일 크기:</strong> <%= fileInfo.fileSize %></p>
         </div>

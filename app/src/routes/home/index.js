@@ -14,7 +14,7 @@ router.get("/login", ctrl.output.login);
 router.get("/register", ctrl.output.register);
 router.get("/preview/:fileName", PreviewController.showPreview);
 
-router.post("/upload", uploader.single("image"), ctrl.process.upload);
+router.post("/upload", Upload.getUploader(), ctrl.process.upload);
 router.post("/login", ctrl.process.login);
 router.post("/register", ctrl.process.register);
 

@@ -55,6 +55,8 @@ const process = {
     },
     upload: (req, res) => {
         try {
+            console.log('Upload request received:', req.file); // 디버깅용 로그
+
             if (!req.file) {
                 return res.status(400).json({ 
                     success: false, 
@@ -62,18 +64,23 @@ const process = {
                 });
             }
 
-            res.json({
+            const fileType = req.file.mimetype.startsWith('image/') ? 'image' : 
+                           req.file.mimetype.startsWith('video/') ? 'video' : 'unknown';
+
+            return res.json({
                 success: true,
                 message: '파일 업로드 성공',
-                filename: req.file.filename
+                filename: req.file.filename,
+                fileType: fileType
             });
         } catch (error) {
-            res.status(500).json({ 
+            console.error('Upload error:', error); // 디버깅용 로그
+            return res.status(500).json({ 
                 success: false, 
                 message: '서버 오류가 발생했습니다.' 
             });
         }
-    },  
+    },
 };
 
 module.exports = {
